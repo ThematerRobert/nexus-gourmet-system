@@ -213,6 +213,7 @@ function toggleMenu() {
     document.getElementById("mySidebar").classList.toggle("active");
     document.getElementById("overlay").classList.toggle("active");
 }
+
 function showSection(id) {
     document.getElementById("menuPage").classList.add("hidden");
     document.getElementById("experiencePage").classList.add("hidden");
@@ -222,28 +223,51 @@ function showSection(id) {
     if(document.getElementById("mySidebar").classList.contains("active")) toggleMenu();
     window.scrollTo(0,0);
 }
+
 function goToExperience(plato){
     showSection('experiencePage');
     document.getElementById("rPlato").value = plato;
     document.getElementById("ePlato").value = plato;
 }
-function showReserva(){ document.getElementById("reserva").classList.remove("hidden"); document.getElementById("entrega").classList.add("hidden"); }
-function showEntrega(){ document.getElementById("entrega").classList.remove("hidden"); document.getElementById("reserva").classList.add("hidden"); }
 
+// FONKSYON POU DESANN PAJ LA OTOMATIKMAN
+function showReserva(){ 
+    let el = document.getElementById("reserva");
+    el.classList.remove("hidden"); 
+    document.getElementById("entrega").classList.add("hidden");
+    el.scrollIntoView({ behavior: 'smooth' }); // Sa a fè l moute dous devan je l
+}
+
+function showEntrega(){ 
+    let el = document.getElementById("entrega");
+    el.classList.remove("hidden"); 
+    document.getElementById("reserva").classList.add("hidden"); 
+    el.scrollIntoView({ behavior: 'smooth' }); // Menm bagay isit la
+}
+
+// MESAJ WHATSAPP KI PARÈT PRO
 function enviarReserva(){
-  const msg = "Reserva:%0ANombre: " + document.getElementById("rNombre").value + 
-              "%0AEn: " + document.getElementById("rTipo").value + 
-              "%0APersonas: " + document.getElementById("rPersonas").value + 
-              "%0AFecha: " + document.getElementById("rFecha").value + 
-              "%0APlato: " + document.getElementById("rPlato").value;
+  const msg = "🛎️ NUEVA RESERVA - NEXUS LUX 🛎️%0A" +
+              "--------------------------------%0A" +
+              "👤 Cliente: " + document.getElementById("rNombre").value + "%0A" +
+              "🥂 Ocasión: " + document.getElementById("rTipo").value + "%0A" +
+              "👥 Personas: " + document.getElementById("rPersonas").value + "%0A" +
+              "📅 Fecha: " + document.getElementById("rFecha").value + "%0A" +
+              "🍽️ Plato: " + document.getElementById("rPlato").value + "%0A" +
+              "--------------------------------%0A" +
+              "🚀 Enviado vía Sistema Nexus";
   window.open("https://wa.me/56935605829?text=" + msg);
 }
 
 function enviarEntrega(){
-  const msg = "Entrega:%0ANombre: " + document.getElementById("eNombre").value + 
-              "%0ADireccion: " + document.getElementById("eDireccion").value + 
-              "%0APlato: " + document.getElementById("ePlato").value + 
-              "%0AMensaje: " + document.getElementById("eMensaje").value;
+  const msg = "🛵 NUEVO PEDIDO - DELIVERY 🛵%0A" +
+              "--------------------------------%0A" +
+              "👤 Cliente: " + document.getElementById("eNombre").value + "%0A" +
+              "📍 Dirección: " + document.getElementById("eDireccion").value + "%0A" +
+              "🍽️ Plato: " + document.getElementById("ePlato").value + "%0A" +
+              "📝 Nota: " + document.getElementById("eMensaje").value + "%0A" +
+              "--------------------------------%0A" +
+              "✅ Confirmar pedido por este chat";
   window.open("https://wa.me/56935605829?text=" + msg);
 }
 </script>
