@@ -110,6 +110,75 @@ footer{background:#000;padding:30px;text-align:center;color:#aaa; border-top: 1p
     from { transform: translateX(0); }
     to { transform: translateX(-100%); }
 }
+.cart-float {
+    position: fixed; bottom: 95px; right: 25px;
+    width: 55px; height: 55px; background-color: var(--mc-color);
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    z-index: 3000; cursor: pointer; color: #000; font-weight: bold; font-size: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; /* L ap parèt sèlman lè gen atik */
+}
+#cartCount {
+    background: var(--lux-red); color: white; border-radius: 50%;
+    padding: 2px 7px; font-size: 12px; position: absolute; top: 5px; right: 5px;
+}
+/* Animasyon pou fenèt la parèt dousman */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-content {
+    animation: fadeIn 0.3s ease-out;
+}
+@keyframes slideDown {
+    from { top: -100px; opacity: 0; }
+    to { top: 20px; opacity: 1; }
+}
+@keyframes slideUp {
+    from { top: 20px; opacity: 1; }
+    to { top: -100px; opacity: 0; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* 1. Animasyon pou panyen an "bat" tankou kè */
+@keyframes cartPulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 188, 13, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(255, 188, 13, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 188, 13, 0); }
+}
+
+/* 2. Animasyon pou l "sote" lè w ajoute yon plat */
+@keyframes cartBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Nou aplike animasyon yo sou panyen an */
+.cart-float {
+    position: fixed;
+    bottom: 95px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    background-color: var(--mc-color); /* Jòn Nexus la */
+    border-radius: 50%;
+    display: none; /* L ap parèt sèlman lè gen 1 plat */
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    animation: cartPulse 2s infinite; /* Li toujou ap bat dousman */
+    transition: all 0.3s ease;
+}
+
+/* Lè w pase sourit sou li, li grandi yon ti kras */
+.cart-float:hover {
+    transform: scale(1.1);
+    background-color: #ffcc33;
+}
 </style>
 </head>
 <body>
@@ -141,15 +210,15 @@ footer{background:#000;padding:30px;text-align:center;color:#aaa; border-top: 1p
 <section id="menuPage">
   <h1>Menú Gourmet</h1>
   <div class="menu">
-    <div class="card"><img src="10.jpg"><h3>Lomo Saltado Lux</h3><p>Carne de res premium salteada al wok con vegetales y papas.</p><p class="price">$12</p><button onclick="goToExperience('Lomo Saltado Lux')">Comprar</button></div>
-    <div class="card"><img src="11.jpg"><h3>Pollo a la Brasa Nexus</h3><p>Pollo marinado en especias secretas con piel crujiente.</p><p class="price">$12</p><button onclick="goToExperience('Pollo a la Brasa Nexus')">Comprar</button></div>
-    <div class="card"><img src="12.jpg"><h3>Ceviche de la Casa</h3><p>Pescado fresco marinado en limón de pica y cilantro.</p><p class="price">$12</p><button onclick="goToExperience('Ceviche de la Casa')">Comprar</button></div>
-    <div class="card"><img src="13.jpg"><h3>Tacos al Pastor</h3><p>Trío de tacos con piña, cebolla y carne adobada.</p><p class="price">$12</p><button onclick="goToExperience('Tacos al Pastor')">Comprar</button></div>
-    <div class="card"><img src="14.jfif"><h3>Langostinos al Ajillo</h3><p>Camarones gigantes bañados en salsa de ajo y mantequilla.</p><p class="price">$12</p><button onclick="goToExperience('Langostinos al Ajillo')">Comprar</button></div>
-    <div class="card"><img src="15.jfif"><h3>Postre Tres Leches</h3><p>Bizcocho suave bañado en tres tipos de leche cremosa.</p><p class="price">$12</p><button onclick="goToExperience('Postre Tres Leches')">Comprar</button></div>
-    <div class="card"><img src="16.jfif"><h3>Costillas BBQ</h3><p>Costillas de cerdo tiernas con nuestra salsa artesanal.</p><p class="price">$12</p><button onclick="goToExperience('Costillas BBQ')">Comprar</button></div>
-    <div class="card"><img src="17.jfif"><h3>Tabla de Quesos</h3><p>Selección de quesos maduros con frutos secos y miel.</p><p class="price">$12</p><button onclick="goToExperience('Tabla de Quesos')">Comprar</button></div>
-    <div class="card"><img src="18.jfif"><h3>Salmón Grillé</h3><p>Filete de salmón a la plancha con finas hierbas.</p><p class="price">$12</p><button onclick="goToExperience('Salmón Grillé')">Comprar</button></div>
+    <div class="card"><img src="10.jpg"><h3>Lomo Saltado Lux</h3><p>Carne de res premium salteada al wok con vegetales y papas.</p><p class="price">$12</p><button onclick="ajouteNanPanyen('Lomo Saltado Lux')">Comprar</button></div>
+    <div class="card"><img src="11.jpg"><h3>Pollo a la Brasa Nexus</h3><p>Pollo marinado en especias secretas con piel crujiente.</p><p class="price">$12</p><button onclick="ajouteNanPanyen('Pollo a la Brasa Nexus')">Comprar</button></div>
+    <div class="card"><img src="12.jpg"><h3>Ceviche de la Casa</h3><p>Pescado fresco marinado en limón de pica y cilantro.</p><p class="price">$12</p><button onclick="ajouteNanPanyen('Ceviche de la Casa')">Comprar</button></div>
+    <div class="card"><img src="13.jpg"><h3>Tacos al Pastor</h3><p>Trío de tacos con piña, cebolla y carne adobada.</p><p class="price">$12</p><button onclick="ajouteNanPanyen('Tacos al Pastor')">Comprar</button></div>
+    <div class="card"><img src="14.jfif"><h3>Langostinos al Ajillo</h3><p>Camarones gigantes bañados en salsa de ajo y mantequilla.</p><p class="price">$12</p><button onclick="ajouteNanPanyen('Langostinos al Ajillo')">Comprar</button></div>
+    <div class="card"><img src="15.jfif"><h3>Postre Tres Leches</h3><p>Bizcocho suave bañado en tres tipos de leche cremosa.</p><p class="price">$12</p><button onclick="ajouteNanPanyen('Postre Tres Leches')">Comprar</button></div>
+    <div class="card"><img src="16.jfif"><h3>Costillas BBQ</h3><p>Costillas de cerdo tiernas con nuestra salsa artesanal.</p><p class="price">$12</p><button onclick="ajouteNanPanyen('Costillas BBQ')">Comprar</button></div>
+    <div class="card"><img src="17.jfif"><h3>Tabla de Quesos</h3><p>Selección de quesos maduros con frutos secos y miel.</p><p class="price">$12</p><button onclick="ajouteNanPanyen('Tabla de Quesos')">Comprar</button></div>
+    <div class="card"><img src="18.jfif"><h3>Salmón Grillé</h3><p>Filete de salmón a la plancha con finas hierbas.</p><p class="price">$12</p><button onclick="ajouteNanPanyen('Salmón Grillé')">Comprar</button></div>
   </div>
 </section>
 
@@ -191,7 +260,23 @@ footer{background:#000;padding:30px;text-align:center;color:#aaa; border-top: 1p
     <input id="eNombre" placeholder="Tu nombre completo"><input id="eDireccion" placeholder="Dirección exacta"><input id="ePlato" readonly placeholder="Plato"><textarea id="eMensaje" placeholder="Mensaje suplementario..."></textarea><button onclick="enviarEntrega()">WHATSAPP</button>
   </div>
 </section>
+<div class="cart-float" id="cartFloat" onclick="montrePanyen()" style="display:none;">
+    🛒 <span id="cartCount">0</span>
+</div>
 
+<div id="cartModal" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:10000; display:none; align-items:center; justify-content:center;">
+    <div class="modal-content" style="background:#1c1c1c; width:90%; max-width:400px; padding:25px; border-radius:20px; border:2px solid var(--mc-color); position:relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <h2 style="color:var(--mc-color); text-align:center; margin-top:0;">Tu Pedido 🍽️</h2>
+        
+        <div id="listaItems" style="margin:20px 0; max-height:250px; overflow-y:auto; padding-right:5px;">
+            </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px;">
+            <button onclick="finalizarPedido()" style="background:var(--mc-color); color:black; padding:15px; border-radius:10px; font-weight:bold; border:none; cursor:pointer;">CONTINUAR AL PAGO</button>
+            <button onclick="cerrarModal()" style="background:transparent; color:#aaa; border:none; cursor:pointer; font-size:14px;">Añadir más platos</button>
+        </div>
+    </div>
+</div>
 <a href="https://wa.me/56935605829" class="whatsapp-float" target="_blank">
     <svg viewBox="0 0 448 512" width="32" height="32" fill="white"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3 18.7-68.1-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-5.5-2.8-23.2-8.5-44.2-27.1-16.4-14.6-27.4-32.7-30.6-38.2-3.2-5.6-.3-8.6 2.4-11.4 2.5-2.5 5.5-6.5 8.3-9.7 2.8-3.3 3.7-5.5 5.5-9.2 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 13.2 5.8 23.5 9.2 31.6 11.8 13.3 4.2 25.4 3.6 34.9 2.2 10.6-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
 </a>
@@ -202,6 +287,9 @@ footer{background:#000;padding:30px;text-align:center;color:#aaa; border-top: 1p
 </footer>
 
 <script>
+let panyen = [];
+
+// 1. MENU & NAVIGATION
 function toggleMenu() {
     document.getElementById("mySidebar").classList.toggle("active");
     document.getElementById("overlay").classList.toggle("active");
@@ -216,53 +304,131 @@ function showSection(id) {
     if(document.getElementById("mySidebar").classList.contains("active")) toggleMenu();
     window.scrollTo(0,0);
 }
-
-function goToExperience(plato){
-    showSection('experiencePage');
-    document.getElementById("rPlato").value = plato;
-    document.getElementById("ePlato").value = plato;
+function ajouteNanPanyen(plato) {
+    panyen.push(plato);
+    
+    let count = document.getElementById("cartCount");
+    let floatBtn = document.getElementById("cartFloat");
+    
+    if(count) count.innerText = panyen.length;
+    
+    if(floatBtn) {
+        floatBtn.style.display = "flex";
+        // SA SE MAJIK LA: Li aktive animasyon sote a
+        floatBtn.style.animation = "none";
+        setTimeout(() => {
+            floatBtn.style.animation = "cartBounce 0.5s ease, cartPulse 2s infinite";
+        }, 10);
+    }
+    
+    showToast("✅ " + plato + " añadido");
 }
 
+function montrePanyen() {
+    let modal = document.getElementById("cartModal");
+    let lista = document.getElementById("listaItems");
+    if(!modal || !lista) return;
+
+    lista.innerHTML = ""; 
+    panyen.forEach((plat, index) => {
+        lista.innerHTML += `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:#252525; padding:12px; margin-bottom:10px; border-radius:10px; border-left: 4px solid var(--mc-color); animation: fadeIn 0.3s ease;">
+                <span style="color:white; font-size:14px; font-weight:bold;">${plat}</span>
+                <span onclick="eliminarPlat(${index})" style="color:#ff4444; cursor:pointer; font-weight:900; background:#333; padding:5px 10px; border-radius:5px;">✕</span>
+            </div>
+        `;
+    });
+    modal.style.display = "flex";
+}
+
+function eliminarPlat(index) {
+    let platRetire = panyen[index];
+    panyen.splice(index, 1);
+    
+    if(panyen.length === 0) {
+        cerrarModal();
+        document.getElementById("cartFloat").style.display = "none";
+    } else {
+        montrePanyen();
+    }
+    document.getElementById("cartCount").innerText = panyen.length;
+    showToast("🗑️ " + platRetire + " eliminado");
+}
+
+function cerrarModal() {
+    document.getElementById("cartModal").style.display = "none";
+}
+
+function finalizarPedido() {
+    cerrarModal();
+    showSection('experiencePage');
+    let lisKonplè = panyen.join(", ");
+    document.getElementById("rPlato").value = lisKonplè;
+    document.getElementById("ePlato").value = lisKonplè;
+}
+
+// 3. TI MESAJ (TOASTS) PI BÈL
+function showToast(message) {
+    let toast = document.createElement("div");
+    toast.innerText = message;
+    // Style pwofesyonèl ak Glassmorphism
+    toast.style.cssText = `
+        position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+        background: #28a745; color: black; padding: 12px 25px;
+        border-radius: 50px; font-weight: bold; z-index: 11000;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3); font-size: 14px;
+        backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2);
+        animation: slideDown 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = "slideUp 0.5s ease forwards";
+        setTimeout(() => toast.remove(), 500);
+    }, 2500);
+}
+
+// 4. RESERVA & ENTREGA
 function showReserva(){ 
-    let el = document.getElementById("reserva");
-    el.classList.remove("hidden"); 
+    document.getElementById("reserva").classList.remove("hidden"); 
     document.getElementById("entrega").classList.add("hidden");
-    el.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById("reserva").scrollIntoView({ behavior: 'smooth' });
 }
 
 function showEntrega(){ 
-    let el = document.getElementById("entrega");
-    el.classList.remove("hidden"); 
+    document.getElementById("entrega").classList.remove("hidden"); 
     document.getElementById("reserva").classList.add("hidden"); 
-    el.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById("entrega").scrollIntoView({ behavior: 'smooth' });
 }
 
+// 5. TI KAT WHATSAPP (DISEÑO DE TARJETA)
 function enviarReserva(){
-  const msg = "🛎️ NUEVA RESERVA - NEXUS LUX 🛎️%0A" +
-              "--------------------------------%0A" +
-              "👤 Cliente: " + document.getElementById("rNombre").value + "%0A" +
-              "🥂 Ocasión: " + document.getElementById("rTipo").value + "%0A" +
-              "👥 Personas: " + document.getElementById("rPersonas").value + "%0A" +
-              "📅 Fecha: " + document.getElementById("rFecha").value + "%0A" +
-              "🍽️ Plato: " + document.getElementById("rPlato").value + "%0A" +
-              "--------------------------------%0A" +
-              "🚀 Enviado vía Sistema Nexus";
+  const platos = panyen.length > 0 ? panyen.join(", ") : document.getElementById("rPlato").value;
+  const msg = "┏━━━━━━━━━━━━━━━━━━━━━━━┓%0A" +
+              "┃  🛎️  NUEVA RESERVA - NEXUS  ┃%0A" +
+              "┗━━━━━━━━━━━━━━━━━━━━━━━┛%0A" +
+              "👤 CLIENTE: " + document.getElementById("rNombre").value + "%0A" +
+              "🥂 OCASIÓN: " + document.getElementById("rTipo").value + "%0A" +
+              "👥 PERSONAS: " + document.getElementById("rPersonas").value + "%0A" +
+              "📅 FECHA: " + document.getElementById("rFecha").value + "%0A" +
+              "🍽️ PLATOS: " + platos + "%0A" +
+              "----------------------------------------%0A" +
+              "🚀 Enviado vía Sistema Nexus Lux";
   window.open("https://wa.me/56935605829?text=" + msg);
 }
 
 function enviarEntrega(){
-  const msg = "🛵 NUEVO PEDIDO - DELIVERY 🛵%0A" +
-              "--------------------------------%0A" +
-              "👤 Cliente: " + document.getElementById("eNombre").value + "%0A" +
-              "📍 Dirección: " + document.getElementById("eDireccion").value + "%0A" +
-              "🍽️ Plato: " + document.getElementById("ePlato").value + "%0A" +
-              "📝 Nota: " + document.getElementById("eMensaje").value + "%0A" +
-              "--------------------------------%0A" +
+  const platos = panyen.length > 0 ? panyen.join(", ") : document.getElementById("ePlato").value;
+  const msg = "┏━━━━━━━━━━━━━━━━━━━━━━━┓%0A" +
+              "┃  🛵  NUEVO PEDIDO - NEXUS   ┃%0A" +
+              "┗━━━━━━━━━━━━━━━━━━━━━━━┛%0A" +
+              "👤 CLIENTE: " + document.getElementById("eNombre").value + "%0A" +
+              "📍 DIRECCIÓN: " + document.getElementById("eDireccion").value + "%0A" +
+              "🍽️ PLATOS: " + platos + "%0A" +
+              "📝 NOTA: " + document.getElementById("eMensaje").value + "%0A" +
+              "----------------------------------------%0A" +
               "✅ Confirmar pedido por este chat";
   window.open("https://wa.me/56935605829?text=" + msg);
 }
 </script>
-</body>
-</html>
 </body>
 </html>
